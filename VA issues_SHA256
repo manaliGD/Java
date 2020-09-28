@@ -1,0 +1,34 @@
+For the vA issues : 
+
+No- Cache:
+        response.setHeader( "Expires", "Sat, 6 May 1995 12:00:00 GMT" );
+        response.setHeader( "Cache-Control", "no-store, no-cache, must-revalidate" );
+        response.addHeader( "Cache-Control", "post-check=0, pre-check=0" );
+        response.setHeader( "Pragma", "no-cache" );
+        response.setHeader( "Content-Type", "application/javascript" );
+        response.setHeader( "Connection", "close" );
+
+
+Frame hijacking: ((HttpServletResponse) response).addHeader("X-Frame-Options", "SAMEORIGIN");
+
+Cookies and ContentType:
+res.setHeader("X-Content-Type-Options", "nosniff");
+res.setHeader("X-XSS-Protection", "1");
+res.addHeader("Set-Cookie", "key=value; HttpOnly; SameSite=strict");
+
+HMAC-SHA256:
+to make it independent of the OS as the new line character in window is \r\n and in Linux is \n
+we need to convert the file in to stringBuffer and replace the new line char from blank 
+
+InputStream is = new ByteArrayInputStream("file content".getBytes());
+
+    //read it with BufferedReader
+    BufferedReader br  = new BufferedReader(new InputStreamReader(is));
+
+    StringBuilder sb = new StringBuilder();
+
+    String line;
+    while ((line = br.readLine()) != null) {
+        sb.append(line.replace("\r","").replace("\n",""))  
+       
+digest = HMAC.computeLMAC(SysParams.getInstance().getParam(AppConstants.RMA_LAU_KEY),digestStream);
